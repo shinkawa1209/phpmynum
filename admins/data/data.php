@@ -6,55 +6,36 @@
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
     //データの初期化
-    // $delete_admins = $dbh->exec('TRUNCATE TABLE admins');
     $delete_contacts = $dbh->exec('TRUNCATE TABLE contacts');
 
-    // //管理者データ生成
-    // $admin_stmt = $dbh->prepare('INSERT INTO admins(
-    //     name,
-    //     password,
-    //     password_hash,
-    //     created,
-    //     updated
-    // ) values(
-    //     :name,
-    //     :password,
-    //     :password_hash,
-    //     now(),
-    //     now()
-    // )');
-
-    // $admin_stmt->bindValue(':name', 'test');
-    // $admin_stmt->bindValue(':password', 'test');
-    // $admin_stmt->bindValue(':password_hash', password_hash('test', PASSWORD_DEFAULT));
-    // $admin_stmt->execute();
-
     //お問い合わせのデータinsert文を実行する準備
+    $names = ['山田太郎', '鈴木次郎', '田中三郎', '吉田四郎', '佐藤五郎', '渡辺六郎', '山口七郎', '中川八郎', '酒井九郎', '吉本一子', '杉田ニ美', '武田三子'];
     $genders = ['男性', '女性'];
+    $addrs = ['東京都千代田区', '東京都豊島区', '埼玉県さいたま市', '千葉県千葉市', '大阪府大阪市', '愛知県名古屋市', '神奈川県横浜市', '広島県広島市', '福岡県博多市', '京都府京都市', '兵庫県神戸市', '北海道札幌市'];
     $contacts_stmt = $dbh->prepare('INSERT INTO contacts(
+            mynum,
             name,
-            email,
             gender,
-            message,
+            addr,
             created
         ) values(
+            :mynum,
             :name,
-            :email,
             :gender,
-            :message,
+            :addr,
             now()
         )');
 
     for ($i = 0; $i < 110; ++$i) {
-        $name = 'user'.$i;
-        $email = 'user'.$i.'@sample.com';
+        $mynum = rand(100000000000, 999999999999);
+        $name = $names[rand(0, 11)];
         $gender = $genders[rand(0, 1)];
-        $message = 'user'.$i.'です。こんにちは。';
+        $addr = $addrs[rand(0, 11)];
 
+        $contacts_stmt->bindParam(':mynum', $mynum);
         $contacts_stmt->bindParam(':name', $name);
-        $contacts_stmt->bindParam(':email', $email);
         $contacts_stmt->bindParam(':gender', $gender);
-        $contacts_stmt->bindParam(':message', $message);
+        $contacts_stmt->bindParam(':addr', $addr);
         $contacts_stmt->execute();
     }
 
