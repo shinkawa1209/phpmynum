@@ -5,10 +5,10 @@ USE mynumdb;
 CREATE TABLE IF NOT EXISTS contacts
 (
     id int primary key auto_increment,
+    mynum varchar(255),
     name varchar(255),
-    email varchar(255),
     gender varchar(10),
-    message text,
+    addr text,
     created datetime default now(),
     updated datetime,
     processed boolean default 0
