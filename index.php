@@ -1,8 +1,8 @@
 <?php
+       if (isset($_POST['mynum']) ? $mynum = $_POST['mynum'] : $mynum = '');
        if (isset($_POST['name']) ? $name = $_POST['name'] : $name = '');
-       if (isset($_POST['email']) ? $email = $_POST['email'] : $email = '');
        if (isset($_POST['gender']) ? $gender = $_POST['gender'] : $gender = '');
-       if (isset($_POST['message']) ? $message = $_POST['message'] : $message = '');
+       if (isset($_POST['addr']) ? $addr = $_POST['addr'] : $addr = '');
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Simple Form</title>
+        <title>mynumberFortune</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -19,28 +19,28 @@
                 <!-- <li><a href="">Home</a></li>
                 <li><a href="">Service</a></li>
                 <li><a href="">About</a></li> -->
-                <li><a href="index.php">Contact us</a></li>
+                <li><a href="index.php">占いTOP</a></li>
                 <li><a href="/admins/login.php">admins</a></li>
                 <li><a href="/admins/data/data.php">makedata</a></li>
             </ul>
         </nav>
         <header>
-            <h1 id="main-title">Sample Web Form</h1>
+            <h1 id="main-title">☆よく当たる☆<br>マイナンバー占い!!</h1>
         </header>
         <main>
             <section class="form-section">
-                <h2>お問合せフォーム（1/3）</h2>
+                <h2>あなたのマイナンバーを入力してね（1/3）</h2>
                 <div class="form-container">
                     <form id="form">
                         <div class="form-group">
-                            <label>氏名</label>
-                            <input type="text" name="name" id="name" class="form-item" value="<?php echo $name; ?>">
-                            <span id="name-error-message">名前は必須かつ2文字以上8文字以下。</span>
+                            <label>マイナンバー</label>
+                            <input type="text" name="mynum" id="mynum" class="form-item" value="<?php echo $mynum; ?>">
+                            <span id="mynum-error-message" style="color:red">半角数字で12桁以内です</span>
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="text" name="email" id="email" class="form-item" value="<?php echo $email; ?>">
-                            <span id="email-error-message">Emailの形式では無いようです。</span>
+                            <label>氏名</label>
+                            <input type="text" name="name" id="name" class="form-item" value="<?php echo $name; ?>">
+                            <span id="name-error-message" style="color:red">氏名は2文字以上、8文字以下です</span>
                         </div>
                         <div class="form-group">
                             <label>性別</label>
@@ -49,9 +49,9 @@
                             <span id="gender-error-message" style="color:red;display:block">どちらかを選択してください。</span>
                         </div>
                         <div class="form-group">
-                            <label>お問合せ内容</label>
-                            <textarea name="message" class="form-item" id="message"><?php echo $message; ?></textarea>
-                            <span id="message-error-message" style="color:red;display:block">内容は必須です。</span>
+                            <label>住所</label>
+                            <textarea name="addr" class="form-item" id="addr"><?php echo $addr; ?></textarea>
+                            <span id="addr-error-message" style="color:red">住所は必須です。</span>
                         </div>
                         <div class="form-group">
                             <button type="submit" id="next">確認へ</button>
@@ -61,34 +61,47 @@
             </section>
        </main>
        <footer>
-           &copy 20xx Sample corporation.
+           &copy 2023 shinkawa corporation.
        </footer>
        <script>
            //Element取得
                 //form
                 const form = document.getElementById("form");
                 //form element
+                const mynum = document.getElementById("mynum");
                 const name = document.getElementById("name");
-                const email = document.getElementById("email");
                 const gender = document.getElementsByName("gender");
-                const message = document.getElementById("message");
+                const addr = document.getElementById("addr");
                 //error message
+                const mynum_error_message = document.getElementById("mynum-error-message");
                 const name_error_message = document.getElementById("name-error-message");
-                const email_error_message = document.getElementById("email-error-message");
                 const gender_error_message = document.getElementById("gender-error-message");
-                const message_error_message = document.getElementById("message-error-message");
+                const addr_error_message = document.getElementById("addr-error-message");
                 //button
                 const btn = document.getElementById("next");
 
                 //バリデーションパターン
-                const nameExp = /^[a-zA-Zぁ-んァ-ヶｱ-ﾝﾞﾟ一-龠]{2,8}$/;
-                const emailExp = /^[a-z]+@[a-z]+\.[a-z]+$/;
-                const messageExp = /^\S+/;
+                const mynumExp = /^[0-9]{2,12}$/;
+                const nameExp = /^[a-zA-Zぁ-んァ-ヶｱ-ﾝﾞﾟ一-龠0-9]{2,8}$/;
+                const addrExp = /^\S+/;
 
                 //初期状態設定
                 btn.disabled = true;
 
                 //event
+
+                //mynum
+                mynum.addEventListener("keyup", e => {
+                    if (mynumExp.test(mynum.value)) {
+                        mynum.setAttribute("class", "success");
+                        mynum_error_message.style.display = "none";
+                    } else {
+                        mynum.setAttribute("class", "error");
+                        mynum_error_message.style.display = "block";
+                    }
+                    console.log(mynum.getAttribute("class").includes("success"));
+                    checkSuccess();
+                })
 
                 //name
                 name.addEventListener("keyup", e => {
@@ -98,19 +111,6 @@
                     } else {
                         name.setAttribute("class", "error");
                         name_error_message.style.display = "block";
-                    }
-                    console.log(name.getAttribute("class").includes("success"));
-                    checkSuccess();
-                })
-
-                //email
-                email.addEventListener("keyup", e => {
-                    if (emailExp.test(email.value)) {
-                        email.setAttribute("class", "success");
-                        email_error_message.style.display = "none";
-                    } else {
-                        email.setAttribute("class", "error");
-                        email_error_message.style.display = "block";
                     }
                     checkSuccess();
                 })
@@ -124,14 +124,14 @@
                     })
                 })
 
-                //message
-                message.addEventListener("keyup", e => {
-                    if (messageExp.test(message.value)) {
-                        message.setAttribute("class", "success");
-                        message_error_message.style.display = "none";
+                //住所
+                addr.addEventListener("keyup", e => {
+                    if (addrExp.test(addr.value)) {
+                        addr.setAttribute("class", "success");
+                        addr_error_message.style.display = "none";
                     } else {
-                        message.setAttribute("class", "error");
-                        message_error_message.style.display = "block";
+                        addr.setAttribute("class", "error");
+                        addr_error_message.style.display = "block";
                     }
                     checkSuccess();
                 })
@@ -139,9 +139,10 @@
 
                 //ボタンのdisabled制御
                 const checkSuccess = () => {
-                    if (name.value && email.value && document.querySelector("input:checked[name=gender]")) {
-                        if (name.getAttribute("class").includes("success") 
-                            && email.getAttribute("class").includes("success") 
+                    if (mynum.value && name.value && document.querySelector("input:checked[name=gender]")) {
+                        if (mynum.getAttribute("class").includes("success") 
+                            && name.getAttribute("class").includes("success")
+                            && addr.getAttribute("class").includes("success") 
                             && document.querySelector("input:checked[name=gender]").value) {
                             btn.disabled = false;
                         } else {
@@ -152,9 +153,10 @@
 
                 //confirm.phpから戻ってきたときの制御
                    window.addEventListener('load', (event) => {
-                       if (name.value && email.value && document.querySelector("input:checked[name=gender]")) {
+                       if (mynum.value && name.value && document.querySelector("input:checked[name=gender]")) {
+                           mynum.setAttribute("class", "success");
                            name.setAttribute("class", "success");
-                           email.setAttribute("class", "success");
+                           addr.setAttribute("class", "success");
                            gender_error_message.style.display = "none";
                            btn.disabled = false;
                        }
@@ -170,4 +172,4 @@
            
        </script>
    </body>
-/html>
+</html>

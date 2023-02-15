@@ -31,15 +31,20 @@ nav a:hover{
 /* headerのスタイル */
 
 header{
-    height: 200px;
-    background: url(./wall.jpg) center/cover;
+    height: 350px;
+    background: url(./wall.jpg) center;
 }
 
 #main-title{
     margin: 0;
     padding: 50px;
-    font-size: 24px;
-    font-weight: normal;
+    font-size: 36px;
+    font-weight: bold;
+    color: #e60606;
+    text-shadow:1px 1px 0 #FFF, -1px -1px 0 #FFF,
+              -1px 1px 0 #FFF, 1px -1px 0 #FFF,
+              0px 1px 0 #FFF,  0-1px 0 #FFF,
+              -1px 0 0 #FFF, 1px 0 0 #FFF;
 }
 
 /* mainのスタイル */
@@ -72,16 +77,16 @@ label{
 }
 
 input[type='text']{
-    width: 180px;
+    width: 200px;
     height: 1.8em;
     border: solid 1px #ccc;
     border-radius: 3px;
 }
 
 textarea{
-    width: 180px;
+    width: 200px;
     vertical-align: top;
-    height: 5em;
+    height: 1.8em;
     border: solid 1px #ccc;
     border-radius: 3px;
 }
@@ -137,6 +142,7 @@ footer{
 
 .thankyou-message{
     text-align: center;
+    font-weight: bold;
 }
 
 /* error_messageの追加 */
@@ -155,10 +161,18 @@ input.error {
 }
 
 /* エラーメッセージの非表示 */
+#mynum-error-message {
+    display: none;
+}
+
 #name-error-message {
     display: none;
 }
 
-#email-error-message {
+#addr-error-message {
+    display: none;
+}
+
+#gender-error-message {
     display: none;
 }

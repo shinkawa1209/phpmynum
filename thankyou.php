@@ -1,8 +1,8 @@
 <?php
+    $mynum = $_POST['mynum'];
     $name = $_POST['name'];
-    $email = $_POST['email'];
     $gender = $_POST['gender'];
-    $message = $_POST['message'];
+    $addr = $_POST['addr'];
 
     //DBへのINSERT
     //PDOを使ってDBに接続
@@ -12,21 +12,21 @@
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
     //insert文を実行する準備
     $stmt = $dbh->prepare('insert into contacts(
+        mynum,
         name,
-        email,
         gender,
-        message
+        addr
     ) values(
+        :mynum,
         :name,
-        :email,
         :gender,
-        :message
+        :addr
     )');
     //insert文の各パラメータ（:がついてるパラメータ）にbindParamでconfirm.phpから取得した値を代入する
+    $stmt->bindParam(':mynum', $mynum);
     $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':email', $email);
     $stmt->bindParam(':gender', $gender);
-    $stmt->bindParam(':message', $message);
+    $stmt->bindParam(':addr', $addr);
     //insertを実行
     $stmt->execute();
 ?>
@@ -35,7 +35,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Simple Form</title>
+        <title>mynumberFortune</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -44,24 +44,23 @@
                 <!-- <li><a href="">Home</a></li>
                 <li><a href="">Service</a></li>
                 <li><a href="">About</a></li> -->
-                <li><a href="index.php">Contact us</a></li>
+                <li><a href="index.php">占いTOP</a></li>
             </ul>
         </nav>
         <header>
-            <h1 id="main-title">Sample Web Form</h1>
+            <h1 id="main-title">☆よく当たる☆<br>マイナンバー占い!!</h1>
         </header>
         <main>
             <section class="form-section">
-                <h2>お問合せを受付ました（3/3）</h2>
+                <h2>占い結果（3/3）</h2>
                 <div class="form-container">
-                    <p class="thankyou-message">ありがとうございました。</p>
-                    <p>以下の内容を受け取りました。</p>
-                    <p><?php print_r($_POST); ?></p>
+                    <p class="thankyou-message">あなたは騙されやすい性格です。</p>
+                    <p class="thankyou-message">怪しいサイトにマイナンバーを入力しないように気をつけましょう。</p>
                 </div>
             </section>
         </main>
         <footer>
-            &copy 20xx Sample corporation.
+            &copy 20xx shinkawa corporation.
         </footer>
     </body>
 </html>
