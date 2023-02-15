@@ -26,7 +26,7 @@
     //BOMあり
     fwrite($fp, "\xEF\xBB\xBF");
 
-    $header = ['ID', '名前', 'メールアドレス', '性別', 'お問い合わせ内容', '受付日時', '更新日時', '処理'];
+    $header = ['ID', 'マイナンバー', '氏名', '性別', '住所', '登録日時', '更新日時', '確認'];
     fputcsv($fp, $header);
 
     foreach ($contacts as $contact) {

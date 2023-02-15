@@ -22,32 +22,32 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Simple Form</title>
+        <title>myNumberFortune</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <nav>
             <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="../index.php">お問い合わせ</a></li>
+                <li><a href="index.php">管理画面</a></li>
+                <li><a href="../index.php">占いTOP</a></li>
                 <li><a href="logout.php">ログアウト</a></li>
             </ul>
         </nav>
         <main>
             <section class="form-section">
-                <h2>新規お問い合わせ作成</h2>
+                <h2>データ修正</h2>
                 <div class="form-container">
                     <form id="form">
                         <input type="hidden" name="id" value="<?php echo $id; ?>">
                         <div class="form-group">
-                            <label>氏名</label>
-                            <input type="text" name="name" id="name" class="form-item" value="<?php echo $contact['name']; ?>">
-                            <span id="name-error-message">名前は必須かつ3文字以上6文字以下。</span>
+                            <label>マイナンバー</label>
+                            <input type="text" name="mynum" id="mynum" class="form-item" value="<?php echo $contact['mynum']; ?>">
+                            <span id="mynum-error-message" style="color:red;display:block">半角数字で12桁以内</span>
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="text" name="email" id="email" class="form-item" value="<?php echo $contact['email']; ?>">
-                            <span id="email-error-message">Emailの形式では無いようです。</span>
+                            <label>氏名</label>
+                            <input type="text" name="name" id="name" class="form-item" value="<?php echo $contact['name']; ?>">
+                            <span id="name-error-message" style="color:red;display:block">氏名は2文字以上、8文字以下</span>
                         </div>
                         <div class="form-group">
                             <label>性別</label>
@@ -57,18 +57,18 @@
                             女性：<input type="radio" name="gender" value="女性" <?php if ($contact['gender'] == '女性') {
                                     echo 'checked';
                                 } ?>>
-                            <span id="gender-error-message" style="color:red;display:block">どちらかを選択してください。</span>
+                            <span id="gender-error-message" style="color:red;display:block">どちらかを選択</span>
                         </div>
                         <div class="form-group">
-                            <label>お問合せ内容</label>
-                            <textarea name="message" class="form-item" id="message"><?php echo $contact['message']; ?></textarea>
-                            <span id="message-error-message" style="color:red;display:block">内容は必須です。</span>
+                            <label>住所</label>
+                            <textarea name="addr" class="form-item" id="addr"><?php echo $contact['addr']; ?></textarea>
+                            <span id="addr-error-message" style="color:red;display:block">住所は必須</span>
                         </div>
                         <div class="form-group">
-                            <label>処理</label>
+                            <label>確認</label>
                             <input type="checkbox" name="processed" value="1" <?php if ($contact['processed'] == '1') {
                                     echo 'checked';
-                                } ?>>処理した
+                                } ?>>確認した
                         </div>
                         <div class="form-group">
                             <button type="submit" id="next" class="btn btn-primary">更新</button>
@@ -78,7 +78,7 @@
             </section>
         </main>
         <footer>
-            &copy; 20xx Sample corporation.
+            &copy; 20xx shinkawa corporation.
         </footer>
         <script>
 
@@ -87,52 +87,52 @@
             //form
             const form = document.getElementById("form");
             //form element
+            const mynum = document.getElementById("mynum");
             const name = document.getElementById("name");
-            const email = document.getElementById("email");
             const gender = document.getElementsByName("gender");
-            const message = document.getElementById("message");
+            const addr = document.getElementById("addr");
             //error message
+            const mynum_error_message = document.getElementById("mynum-error-message");
             const name_error_message = document.getElementById("name-error-message");
-            const email_error_message = document.getElementById("email-error-message");
             const gender_error_message = document.getElementById("gender-error-message");
-            const message_error_message = document.getElementById("message-error-message");
+            const addr_error_message = document.getElementById("addr-error-message");
             //button
 
             //button
             const btn = document.getElementById("next");
 
             //バリデーションパターン
+            const mynumExp = /^[0-9]{2,12}$/;
             const nameExp = /^[a-zA-Zぁ-んァ-ヶｱ-ﾝﾞﾟ一-龠0-9]{2,8}$/;
-            const emailExp = /^[a-zA-Z0-9\._-]+@[a-z]+\.[a-z]+$/;
-            const messageExp = /^\S+/;
+            const addrExp = /^\S+/;
 
             //初期状態設定
             btn.disabled = true;
 
             //event
 
+            //mynum
+            mynum.addEventListener("keyup", e => {
+                if (mynumExp.test(mynum.value)) {
+                    mynum.setAttribute("class", "success");
+                    mynum_error_message.style.display = "none";
+                } else {
+                    mynum.setAttribute("class", "error");
+                    mynum_error_message.style.display = "block";
+                }
+                console.log(mynum.getAttribute("class").includes("success"));
+                checkSuccess();
+            });
+
             //name
             name.addEventListener("keyup", e => {
                 if (nameExp.test(name.value)) {
                     name.setAttribute("class", "success");
                     name_error_message.style.display = "none";
+
                 } else {
                     name.setAttribute("class", "error");
                     name_error_message.style.display = "block";
-                }
-                console.log(name.getAttribute("class").includes("success"));
-                checkSuccess();
-            });
-
-            //email
-            email.addEventListener("keyup", e => {
-                if (emailExp.test(email.value)) {
-                    email.setAttribute("class", "success");
-                    email_error_message.style.display = "none";
-
-                } else {
-                    email.setAttribute("class", "error");
-                    email_error_message.style.display = "block";
                 }
                 checkSuccess();
             });
@@ -145,24 +145,24 @@
                 })
             });
 
-            //message
-            message.addEventListener("keyup", e => {
-                if (messageExp.test(message.value)) {
-                    message.setAttribute("class", "success");
-                    message_error_message.style.display = "none";
+            //addr
+            addr.addEventListener("keyup", e => {
+                if (addrExp.test(addr.value)) {
+                    addr.setAttribute("class", "success");
+                    addr_error_message.style.display = "none";
                 } else {
-                    message.setAttribute("class", "error");
-                    message_error_message.style.display = "block";
+                    addr.setAttribute("class", "error");
+                    addr_error_message.style.display = "block";
                 }
                 checkSuccess();
             })
 
             //ボタンのdisabled制御
             const checkSuccess = () => {
-                if (name.value && email.value && document.querySelector("input:checked[name=gender]")&&message.value) {
-                    if (name.getAttribute("class").includes("success") 
-                        && email.getAttribute("class").includes("success") 
-                        && message.getAttribute("class").includes("success")
+                if (mynum.value && name.value && document.querySelector("input:checked[name=gender]")&&addr.value) {
+                    if (mynum.getAttribute("class").includes("success") 
+                        && name.getAttribute("class").includes("success") 
+                        && addr.getAttribute("class").includes("success")
                         && document.querySelector("input:checked[name=gender]").value) {
                         btn.disabled = false;
                     } else {
@@ -173,14 +173,14 @@
 
             //最初の制御
             window.addEventListener('load', (event) => {
-                if (name.value && email.value && document.querySelector("input:checked[name=gender]")&&message.value) {
+                if (mynum.value && name.value && document.querySelector("input:checked[name=gender]")&&addr.value) {
+                    mynum.setAttribute("class", "success");
                     name.setAttribute("class", "success");
-                    email.setAttribute("class", "success");
-                    message.setAttribute("class", "success");
+                    addr.setAttribute("class", "success");
+                    mynum_error_message.style.display = "none";
                     name_error_message.style.display = "none";
-                    email_error_message.style.display = "none";
                     gender_error_message.style.display = "none";
-                    message_error_message.style.display = "none";
+                    addr_error_message.style.display = "none";
                     btn.disabled = false;
                 }
             });

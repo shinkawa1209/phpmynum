@@ -24,20 +24,20 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Simple Form</title>
+        <title>myNumberFortune</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <nav>
             <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="../index.php">お問い合わせ</a></li>
+                <li><a href="index.php">管理画面</a></li>
+                <li><a href="../index.php">占いTOP</a></li>
                 <li><a href="logout.php">ログアウト</a></li>
             </ul>
         </nav>
         <main>
             <section>
-                <h2>管理画面　お問い合わせ詳細</h2>
+                <h2>管理画面　データ詳細</h2>
                 <div class="list">
                 <table>
                     <tbody>
@@ -45,30 +45,30 @@
                             <th>id</th><td><?php echo $contact['id']; ?></td>
                         </tr>
                         <tr>
-                            <th>名前</th><td><?php echo $contact['name']; ?></td>
+                            <th>マイナンバー</th><td><?php echo $contact['mynum']; ?></td>
                         </tr>
                         <tr>
-                            <th>email</th><td><?php echo $contact['email']; ?></td>
+                            <th>氏名</th><td><?php echo $contact['name']; ?></td>
                         </tr>
                         <tr>
                             <th>性別</th><td><?php echo $contact['gender']; ?></td>
                         </tr>
                         <tr>
-                            <th>お問い合わせ内容</th><td><?php echo $contact['message']; ?></td>
+                            <th>住所</th><td><?php echo $contact['addr']; ?></td>
                         </tr>
                         <tr>
-                            <th>受付日時</th><td><?php echo $contact['created']; ?></td>
+                            <th>登録日時</th><td><?php echo $contact['created']; ?></td>
                         </tr>
                         <tr>
                        <th>最終更新日時</th><td><?php echo $contact['updated']; ?></td>
                         </tr>
                         <tr>
-                            <th>処理</th>
+                            <th>確認</th>
                             <td>
                                 <?php if ($contact['processed'] == 0): ?>
-                                    未処理
+                                    未確認
                                 <?php else: ?>
-                                    処理済
+                                    確認済
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -88,14 +88,14 @@
             </section>
         </main>
         <footer>
-            &copy; 20xx Sample corporation.
+            &copy; 20xx shinkawa corporation.
         </footer>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script>
         $(".delete").click(function(){
             const form = document.getElementById("delete_form");
             const id = document.getElementById("id").value;
-            if(confirm("ID:"+id+"番のお問い合わせを本当に削除していいですか？")){
+            if(confirm("ID:"+id+"番のデータを本当に削除していいですか？")){
                 //OK
                 form.submit();
             }else{
