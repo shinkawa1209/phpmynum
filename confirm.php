@@ -1,24 +1,24 @@
 <?php
+    if (isset($_POST['mynum']) ? $mynum = $_POST['mynum'] : $mynum = '');
     if (isset($_POST['name']) ? $name = $_POST['name'] : $name = '');
-    if (isset($_POST['email']) ? $email = $_POST['email'] : $email = '');
     if (isset($_POST['gender']) ? $gender = $_POST['gender'] : $gender = '');
-    if (isset($_POST['message']) ? $message = $_POST['message'] : $message = '');
+    if (isset($_POST['addr']) ? $addr = $_POST['addr'] : $addr = '');
     $errors = [];
-	    if (empty($name)) {
-	        $errors[] = '名前は必須です。';
+	    if (empty($mynum)) {
+	        $errors[] = 'マイナンバーは必須です。';
 	    } else {
 	        //パターンミスマッチ
-	        if (!preg_match('/^[a-zA-Zぁ-んァ-ヶｱ-ﾝﾞﾟ一-龠]{2,16}$/', $name)) {
-	            $errors[] = '名前は2文字以上8文字以下で設定してください';
+	        if (!preg_match('/^[0-9]{2,12}$/', $mynum)) {
+	            $errors[] = '半角数字で12桁以内で入力してください';
 	        }
 	    }
 
-	    if (empty($email)) {
-	        $errors[] = 'Emailは必須です。';
+	    if (empty($name)) {
+	        $errors[] = '氏名は必須です';
 	    } else {
 	        //パターンミスマッチ
-	        if (!preg_match('/^[a-z]+@[a-z]+\.[a-z]+$/', $email)) {
-	            $errors[] = 'Emailの形式では無いようです';
+	        if (!preg_match('/^[a-zA-Zぁ-んァ-ヶｱ-ﾝﾞﾟ一-龠0-9]{2,12}$/', $name)) {
+	            $errors[] = '氏名は2文字以上、8文字以下です';
 	        }
 	    }
 
@@ -26,8 +26,8 @@
 	        $errors[] = '性別はどちらかを選択してください';
 	    }
 
-		if (empty($message)) {
-       	$errors[] = 'お問い合わせ内容は必須です。';
+		if (empty($addr)) {
+       	$errors[] = '住所は必須です。';
    	} 
 
 	    if (empty($errors)) {
@@ -41,7 +41,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Simple Form</title>
+        <title>mynumberFortune</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -50,29 +50,29 @@
                 <!-- <li><a href="">Home</a></li>
                 <li><a href="">Service</a></li>
                 <li><a href="">About</a></li> -->
-                <li><a href="index.php">Contact us</a></li>
+                <li><a href="index.php">占いTOP</a></li>
             </ul>
         </nav>
         <header>
-            <h1 id="main-title">Sample Web Form</h1>
+            <h1 id="main-title">☆よく当たる☆<br>マイナンバー占い!!</h1>
         </header>
         <main>
             <section class="form-section">
-                <h2>お問合せ内容の確認（2/3）</h2>
+                <h2>内容の確認（2/3）</h2>
                 <div class="form-container">
                     <?php foreach ($errors as $error): ?>
     		            <span class="error_message"><?php echo $error; ?></span>
     		        <?php endforeach; ?>
                     <form id="form">
                         <div class="form-group">
+                            <label>マイナンバー</label>
+                            <span class="confirm-item"><?php echo $mynum; ?></span>
+                            <input type="hidden" name="mynum" value="<?php echo $mynum; ?>">
+                        </div>
+                        <div class="form-group">
                             <label>氏名</label>
                             <span class="confirm-item"><?php echo $name; ?></span>
                             <input type="hidden" name="name" value="<?php echo $name; ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <span class="confirm-item"><?php echo $email; ?></span>
-                            <input type="hidden" name="email" value="<?php echo $email; ?>">
                         </div>
                         <div class="form-group">
                             <label>性別</label>
@@ -80,20 +80,20 @@
                             <input type="hidden" name="gender" value="<?php echo $gender; ?>">
                         </div>
                         <div class="form-group">
-                            <label>お問合せ内容</label>
-                            <span class="confirm-item"><?php echo $message; ?></span>
-                            <input type="hidden" name="message" value="<?php echo $message; ?>">
+                            <label>住所</label>
+                            <span class="confirm-item"><?php echo $addr; ?></span>
+                            <input type="hidden" name="addr" value="<?php echo $addr; ?>">
                         </div>
                         <div class="form-group">
                         <input type="button" id="back" value="戻る">
-                        <button type="submit" id="next" <?php echo $btn; ?>>上記内容で問合せる</button>
+                        <button type="submit" id="next" <?php echo $btn; ?>>上記で占う</button>
                         </div>
                     </form>
                 </div>
             </section>
         </main>
         <footer>
-            &copy 20xx Sample corporation.
+            &copy 20xx shinkawa corporation.
         </footer>
         <script>
             const back = document.getElementById("back");
