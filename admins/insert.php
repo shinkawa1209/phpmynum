@@ -6,10 +6,10 @@
         exit;
     }
 
+    $mynum = isset($_POST['mynum']) ? htmlspecialchars($_POST['mynum'], ENT_QUOTES, 'utf-8') : '';
     $name = isset($_POST['name']) ? htmlspecialchars($_POST['name'], ENT_QUOTES, 'utf-8') : '';
-    $email = isset($_POST['email']) ? htmlspecialchars($_POST['email'], ENT_QUOTES, 'utf-8') : '';
     $gender = isset($_POST['gender']) ? htmlspecialchars($_POST['gender'], ENT_QUOTES, 'utf-8') : '';
-    $message = isset($_POST['message']) ? htmlspecialchars($_POST['message'], ENT_QUOTES, 'utf-8') : '';
+    $addr = isset($_POST['addr']) ? htmlspecialchars($_POST['addr'], ENT_QUOTES, 'utf-8') : '';
 
     //PDOを使ってDBに接続
     $dbh = new PDO('mysql:host='.getenv("MYSQL_HOST").';dbname='.getenv("MYSQL_DATABASE"), getenv("MYSQL_USER"), getenv("MYSQL_PASSWORD"));
@@ -17,21 +17,21 @@
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
     $stmt = $dbh->prepare('insert into contacts(
+        mynum,
         name,
-        email,
         gender,
-        message
+        addr
     ) values(
+        :mynum,
         :name,
-        :email,
         :gender,
-        :message
+        :addr
     )');
     //bindParamで各パラメータにconfirm.phpから取得した値を代入する
+    $stmt->bindParam(':mynum', $mynum);
     $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':email', $email);
     $stmt->bindParam(':gender', $gender);
-    $stmt->bindParam(':message', $message);
+    $stmt->bindParam(':addr', $addr);
     //insertを実行
     $stmt->execute();
 
