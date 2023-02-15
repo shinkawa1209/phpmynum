@@ -1,0 +1,228 @@
+body{
+    margin: 0;
+    padding: 0;
+    /* background: url(./wall.jpg) center center/cover; */
+}
+
+/* mainのスタイル */
+
+.form-section{
+    margin-bottom: 64px;
+}
+
+main h2 {
+    text-align: center;
+    margin: 32px 0;
+    font-weight: normal;
+}
+
+.form-container{
+    background: #eee;
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+label{
+    display: inline-block;
+    width: 120px;
+}
+
+.form-group{
+    padding: 10px;
+}
+
+input[type='text'],
+input[type='password']{
+    width: 180px;
+    height: 1.8em;
+    border: solid 1px #ccc;
+    border-radius: 3px;
+}
+
+textarea{
+    width: 180px;
+    vertical-align: top;
+    height: 5em;
+    border: solid 1px #ccc;
+    border-radius: 3px;
+}
+
+.btn{
+    margin:0 auto;
+    
+}
+
+.btn-primary{
+    padding: 5px;
+    text-decoration: none;
+    color: royalblue;
+    margin:3px;
+    border:solid 2px royalblue;
+    border-radius: 2px;
+}
+
+.btn-primary:hover {
+    background: royalblue;
+    color: white;
+}
+
+.btn-info{
+    padding: 5px;
+    text-decoration: none;
+    color: skyblue;
+    margin:3px;
+    border:solid 2px skyblue;
+    border-radius: 2px;
+}
+
+.btn-info:hover {
+    background: skyblue;
+    color: white;
+}
+
+.btn-danger{
+    padding: 5px;
+    text-decoration: none;
+    color: red;
+    margin:3px;
+    border:solid 2px red;
+    border-radius: 2px;
+}
+
+.btn-danger:hover {
+    background: red;
+    color: white;
+}
+
+.login{
+    text-align:center;
+}
+
+.list table{
+    border-collapse: collapse;
+    margin: 20px auto;
+    width: 80%;
+}
+    
+.list th,
+.list td {
+    border:1px solid #a2aab0;
+    padding: 20px 10px;
+}
+    
+.list th {
+    background-color: #ebeced;
+} 
+.list-box {
+    width: 80%;
+    margin:10px auto;
+}
+
+/* navのスタイル */
+nav{
+    background: #333;
+}
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav a{
+    display: block;
+    padding: 8px 24px;
+    color: #fff;
+    text-decoration: none;
+}
+
+nav a:hover{
+    background: #666;
+}
+
+
+ul {
+  text-align: right;
+}
+
+li {
+  display: inline;
+}
+
+li:last-child{
+    margin-left: auto;
+}
+
+
+/* footerのスタイル */
+
+footer{
+    background:#333;
+    color: #fff;
+    text-align: center;
+    padding: 32px 0;
+} 
+
+/* error_messageの追加 */
+.error_message{
+    color:red;
+    display:block;
+}
+
+/* inputのborderの色 */
+input.success {
+    border: 2px solid green;
+}
+
+input.error {
+    border: 2px solid red;
+}
+
+/* エラーメッセージの表示 */
+#name-error-message {
+    display: block;
+    color:red;
+}
+
+#email-error-message {
+    display: block;
+    color:red;
+}
+
+/*検索窓*/
+.search input {
+    width: 30%;
+    padding: 4px;
+}
+
+.search button {
+    padding: 5px 10px;
+}
+
+/*paging*/
+.paging {
+    width:80%;
+    margin: 10px auto;
+    padding: 10px 10px 5px;
+    /* text-align: right; */
+}
+
+.paging li {
+    display: inline;
+    margin: 0 1px;
+}
+
+.paging a,
+.paging span {
+    color: #4c586f;
+    padding: 5px 8px;
+}
+
+.paging span {
+    background-color: #4c586f;
+    border-radius: 5px;
+    color: #fff;
+} 

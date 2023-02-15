@@ -1,0 +1,6 @@
+docker/db/data
+test.php
+.DS_Store
+contacts.csv
+log.txt
+.env

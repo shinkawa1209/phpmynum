@@ -1,0 +1,34 @@
+version: '3'
+services:
+  mynum_app:
+    container_name: mynum_app
+    build: ./docker/php
+    volumes:
+      - .:/var/www
+    env_file:
+      - .env
+  mynum_nginx:
+    image: nginx 
+    container_name: mynum_nginx
+    ports:
+      - 8000:80 
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    working_dir: /var/www
+    env_file:
+      - .env
+    depends_on:
+      - mynum_app
+  mynum_db:
+    image: mysql:5.7 
+    container_name: mynum_db
+    env_file:
+      - .env
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:  
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf 
+      - ./docker/db/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
