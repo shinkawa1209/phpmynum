@@ -24,7 +24,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>myNumberFortune</title>
+        <title><?php echo getenv("SITE_TITLE"); ?></title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -88,7 +88,7 @@
             </section>
         </main>
         <footer>
-            &copy; 20xx shinkawa corporation.
+            <?php echo getenv("CORP_NAME"); ?>
         </footer>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script>

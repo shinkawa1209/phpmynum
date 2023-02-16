@@ -41,7 +41,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>mynumberFortune</title>
+        <title><?php echo getenv("SITE_TITLE"); ?></title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -54,7 +54,7 @@
             </ul>
         </nav>
         <header>
-            <h1 id="main-title">☆よく当たる☆<br>マイナンバー占い!!</h1>
+            <h1 id="main-title"><?php echo getenv("PAGE_TITLE"); ?></h1>
         </header>
         <main>
             <section class="form-section">
@@ -93,7 +93,7 @@
             </section>
         </main>
         <footer>
-            &copy 20xx shinkawa corporation.
+        <?php echo getenv("CORP_NAME"); ?>
         </footer>
         <script>
             const back = document.getElementById("back");
