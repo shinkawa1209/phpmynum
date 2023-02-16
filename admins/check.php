@@ -2,17 +2,18 @@
     $name = isset($_POST['name']) ? htmlspecialchars($_POST['name'], ENT_QUOTES, 'utf-8') : '';
     $password = isset($_POST['password']) ? htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8') : '';
 
-    //PDOを使ってDBに接続
-    $dbh = new PDO('mysql:host='.getenv("MYSQL_HOST").';dbname='.getenv("MYSQL_DATABASE"), getenv("MYSQL_USER"), getenv("MYSQL_PASSWORD"));
-    //エラーがある場合に表示させる
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-    //select文の準備
-    $stmt = $dbh->prepare('SELECT * FROM admins WHERE(
-        name = :name
-    )');
-    $stmt->bindParam(':name', $name);
-    $stmt->execute();
-    $pass = $stmt->fetch();
+    try {
+            //PDOを使ってDBに接続
+            $dbh = new PDO('mysql:host='.getenv("MYSQL_HOST").';port='.getenv("MYSQL_PORT").';dbname='.getenv("MYSQL_DATABASE"), getenv("MYSQL_USER"), getenv("MYSQL_PASSWORD"));
+            //エラーがある場合に表示させる
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+            //select文の準備
+            $stmt = $dbh->prepare('SELECT * FROM admins WHERE(
+                name = :name
+            )');
+            $stmt->bindParam(':name', $name);
+            $stmt->execute();
+            $pass = $stmt->fetch();
 
     //ログ準備
        $fp = fopen('log.txt', 'a');
@@ -40,3 +41,7 @@
         header('Location:login.php');
         exit;
     }
+}catch(PDOException $e){
+    echo '認証DB接続エラー。DBを見直してください';
+    echo '<a href="../index.php">topへ</a>';
+}
