@@ -7,60 +7,64 @@
 
     $keyword = isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword'], ENT_QUOTES, 'utf-8') : '';
 
-    //PDOを使ってDBに接続
-    $dbh = new PDO('mysql:host='.getenv("MYSQL_HOST").';dbname='.getenv("MYSQL_DATABASE"), getenv("MYSQL_USER"), getenv("MYSQL_PASSWORD"));
-	    //エラーがある場合に表示させる
-	    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+    try{
+        //PDOを使ってDBに接続
+        $dbh = new PDO('mysql:host='.getenv("MYSQL_HOST").';port='.getenv("MYSQL_PORT").';dbname='.getenv("MYSQL_DATABASE"), getenv("MYSQL_USER"), getenv("MYSQL_PASSWORD"));
+            //エラーがある場合に表示させる
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
-        //ページング設定///////////////////////////////////////
-        //1. 何件ずつ表示させるか（固定。今回は10件ずつ）
-        $rows = 10;
+            //ページング設定///////////////////////////////////////
+            //1. 何件ずつ表示させるか（固定。今回は10件ずつ）
+            $rows = 10;
 
-         //2. 現在表示しているページ数（GETで取得。初回など送られてこなければ1を設定する）
-        $page = isset($_GET['page']) ? htmlspecialchars($_GET['page'], ENT_QUOTES, 'utf-8') : 1;
+            //2. 現在表示しているページ数（GETで取得。初回など送られてこなければ1を設定する）
+            $page = isset($_GET['page']) ? htmlspecialchars($_GET['page'], ENT_QUOTES, 'utf-8') : 1;
 
-          //3. 表示するページに応じたレコード取得開始位置（2ページ目の場合は、10件目から表示なので、10*(2-1)で$offset=10が入る）
-        $offset = $rows * ($page - 1);
+            //3. 表示するページに応じたレコード取得開始位置（2ページ目の場合は、10件目から表示なので、10*(2-1)で$offset=10が入る）
+            $offset = $rows * ($page - 1);
 
-         //4. 全件のレコード数。
-         if ($keyword == '') {
-        //queryで実行し、fetchColumn()で取得したcountを返す。
-            $all_rows = $dbh->query('SELECT COUNT(*) FROM contacts')->fetchColumn();
+            //4. 全件のレコード数。
+            if ($keyword == '') {
+            //queryで実行し、fetchColumn()で取得したcountを返す。
+                $all_rows = $dbh->query('SELECT COUNT(*) FROM contacts')->fetchColumn();
+                } else {
+                    //検索条件を考慮
+                    $all_rows_stmt = $dbh->prepare('SELECT * FROM contacts WHERE name like :keyword');
+                    $all_rows_stmt->bindValue(':keyword', '%'.$keyword.'%');
+                    $all_rows_stmt->execute();
+                    //取得したcountを返す。
+                    $all_rows = $all_rows_stmt->rowCount();
+                }
+
+            //5.  全件を10件ずつ表示させた場合のページ数。全件÷表示件数をして、0以下の場合は、ページ数は1に固定。
+            if ((int) ($all_rows / $rows) <= 0) {
+                $pages = 1;
             } else {
-                   //検索条件を考慮
-                   $all_rows_stmt = $dbh->prepare('SELECT * FROM contacts WHERE name like :keyword');
-                   $all_rows_stmt->bindValue(':keyword', '%'.$keyword.'%');
-                   $all_rows_stmt->execute();
-                   //取得したcountを返す。
-                   $all_rows = $all_rows_stmt->rowCount();
+            $pages = ceil($all_rows / $rows);
             }
+        
+            //6.  次のページ数（基本的に現在ページ+1。現在ページ+1が全ページ数より大きくなってしまうとページが無いのでその場合は''とする）
+            $next = ($page + 1 > $pages) ? '' : $page + 1;
+            //7.  一つ前のページ数（基本的に現在ページ-1。現在ページ-1が0になってしまうとページが無いのでその場合は''とする）
+            $prev = ($page - 1 <= 0) ? '' : $page - 1;
+            //ページング設定ここまで///////////////////////////////////////
 
-         //5.  全件を10件ずつ表示させた場合のページ数。全件÷表示件数をして、0以下の場合は、ページ数は1に固定。
-        if ((int) ($all_rows / $rows) <= 0) {
-            $pages = 1;
-        } else {
-           $pages = ceil($all_rows / $rows);
+            if ($keyword == '') {
+                    $stmt = $dbh->prepare('SELECT * FROM contacts limit :offset,:rows');
+                } else {
+                    //検索条件を考慮
+                    $stmt = $dbh->prepare('SELECT * FROM contacts WHERE name like :keyword limit :offset,:rows');
+                    $stmt->bindValue(':keyword', '%'.$keyword.'%');
+                }
+
+            $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            $stmt->bindParam(':rows', $rows, PDO::PARAM_INT);
+            $stmt->execute();
+            //結果を$contactsに格納
+            $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }catch(PDOException $e){
+            echo 'DB接続エラー';
         }
-    
-         //6.  次のページ数（基本的に現在ページ+1。現在ページ+1が全ページ数より大きくなってしまうとページが無いのでその場合は''とする）
-        $next = ($page + 1 > $pages) ? '' : $page + 1;
-         //7.  一つ前のページ数（基本的に現在ページ-1。現在ページ-1が0になってしまうとページが無いのでその場合は''とする）
-        $prev = ($page - 1 <= 0) ? '' : $page - 1;
-        //ページング設定ここまで///////////////////////////////////////
-
-        if ($keyword == '') {
-                   $stmt = $dbh->prepare('SELECT * FROM contacts limit :offset,:rows');
-               } else {
-                   //検索条件を考慮
-                   $stmt = $dbh->prepare('SELECT * FROM contacts WHERE name like :keyword limit :offset,:rows');
-                   $stmt->bindValue(':keyword', '%'.$keyword.'%');
-               }
-
-	    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $stmt->bindParam(':rows', $rows, PDO::PARAM_INT);
-	    $stmt->execute();
-	    //結果を$contactsに格納
-	    $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="ja">

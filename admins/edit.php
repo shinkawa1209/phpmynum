@@ -7,15 +7,19 @@
 
     $id = isset($_GET['id']) ? htmlspecialchars($_GET['id'], ENT_QUOTES, 'utf-8') : '';
 
-    //PDOを使ってDBに接続
-    $dbh = new PDO('mysql:host='.getenv("MYSQL_HOST").';dbname='.getenv("MYSQL_DATABASE"), getenv("MYSQL_USER"), getenv("MYSQL_PASSWORD"));
-    //エラーがある場合に表示させる
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-    //SELECT文準備
-    $stmt = $dbh->prepare('SELECT * FROM contacts WHERE id = :id');
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    $contact = $stmt->fetch();
+    try{
+        //PDOを使ってDBに接続
+        $dbh = new PDO('mysql:host='.getenv("MYSQL_HOST").';port='.getenv("MYSQL_PORT").';dbname='.getenv("MYSQL_DATABASE"), getenv("MYSQL_USER"), getenv("MYSQL_PASSWORD"));
+        //エラーがある場合に表示させる
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+        //SELECT文準備
+        $stmt = $dbh->prepare('SELECT * FROM contacts WHERE id = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $contact = $stmt->fetch();
+    }catch(PDOException $e){
+        echo 'DB接続エラー';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="ja">
