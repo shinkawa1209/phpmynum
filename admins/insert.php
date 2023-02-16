@@ -11,29 +11,34 @@
     $gender = isset($_POST['gender']) ? htmlspecialchars($_POST['gender'], ENT_QUOTES, 'utf-8') : '';
     $addr = isset($_POST['addr']) ? htmlspecialchars($_POST['addr'], ENT_QUOTES, 'utf-8') : '';
 
-    //PDOを使ってDBに接続
-    $dbh = new PDO('mysql:host='.getenv("MYSQL_HOST").';dbname='.getenv("MYSQL_DATABASE"), getenv("MYSQL_USER"), getenv("MYSQL_PASSWORD"));
-    //エラーがある場合に表示させる
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+    try{
+        //PDOを使ってDBに接続
+        $dbh = new PDO('mysql:host='.getenv("MYSQL_HOST").';port='.getenv("MYSQL_PORT").';dbname='.getenv("MYSQL_DATABASE"), getenv("MYSQL_USER"), getenv("MYSQL_PASSWORD"));
+        //エラーがある場合に表示させる
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
-    $stmt = $dbh->prepare('insert into contacts(
-        mynum,
-        name,
-        gender,
-        addr
-    ) values(
-        :mynum,
-        :name,
-        :gender,
-        :addr
-    )');
-    //bindParamで各パラメータにconfirm.phpから取得した値を代入する
-    $stmt->bindParam(':mynum', $mynum);
-    $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':gender', $gender);
-    $stmt->bindParam(':addr', $addr);
-    //insertを実行
-    $stmt->execute();
+        $stmt = $dbh->prepare('insert into contacts(
+            mynum,
+            name,
+            gender,
+            addr
+        ) values(
+            :mynum,
+            :name,
+            :gender,
+            :addr
+        )');
+        //bindParamで各パラメータにconfirm.phpから取得した値を代入する
+        $stmt->bindParam(':mynum', $mynum);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':gender', $gender);
+        $stmt->bindParam(':addr', $addr);
+        //insertを実行
+        $stmt->execute();
+    }catch(PDOException $e){
+        echo 'DB接続エラー';
+        echo '<a href="../index.php">topへ</a>';
+    }
 
     //ログ
     $last_id = $dbh->lastInsertId();
