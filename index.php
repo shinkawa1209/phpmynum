@@ -53,8 +53,9 @@
                             <textarea name="addr" class="form-item" id="addr"><?php echo $addr; ?></textarea>
                             <span id="addr-error-message" style="color:red">住所は必須です。</span>
                         </div>
-                        <div class="form-group">
+                        <div class="btn-group">
                             <button type="submit" id="next">確認へ</button>
+                            <button type="submit" id="rdmdata">ランダム</button>
                         </div>
                     </form>
                 </div>
@@ -79,6 +80,7 @@
                 const addr_error_message = document.getElementById("addr-error-message");
                 //button
                 const btn = document.getElementById("next");
+                const btn_rdm = document.getElementById("rdmdata");
 
                 //バリデーションパターン
                 const mynumExp = /^[0-9]{2,12}$/;
@@ -136,7 +138,6 @@
                     checkSuccess();
                 })
 
-
                 //ボタンのdisabled制御
                 const checkSuccess = () => {
                     if (mynum.value && name.value && document.querySelector("input:checked[name=gender]")) {
@@ -169,7 +170,47 @@
                     form.action = "confirm.php";
                     form.submit();
                 })
-           
+
+                // ランダムデータを入力するFunction（btn_rdmが押された時のイベント）
+                btn_rdm.addEventListener("click", e => {
+                    e.preventDefault();
+                    // サンプルデータの列挙
+                    let firstNames_arr = ['山田', '鈴木', '田中', '吉田', '佐藤', '渡辺', '山口', '中川', '酒井', '吉本', '杉田', '武田', '平井', '川田', '黒田', '阿部', '角田', '加藤', '谷口', '金子', '笠井', '山本'];
+                    let lastNames_arr = ['太郎', '次郎', '三郎', '四郎', '五郎', '六郎', '七郎', '八郎', '九郎', '一子', 'ニ子', '三子', '四子', '五子', '六子', '七子', '八子', '九子'];
+                    let genders_arr = ['男性', '女性'];
+                    let addrs_arr = ['東京都千代田区', '東京都豊島区', '埼玉県さいたま市', '千葉県千葉市', '大阪府大阪市', '愛知県名古屋市', '神奈川県横浜市', '広島県広島市', '福岡県博多市', '京都府京都市', '兵庫県神戸市', '北海道札幌市', '東京都中野区', '東京都練馬区'];
+                    
+                    // 配列の数のカウント
+                    let firstNames_length = firstNames_arr.length;
+                    let lastNames_length = lastNames_arr.length;
+                    let addrs_length = addrs_arr.length;
+
+                    // 乱数生成
+                    let mynumn = Math.floor( Math.random() * (999999999999 + 1 - 100000000000) ) + 100000000000 ;
+                    let fn = Math.floor(Math.random() * firstNames_length - 1);
+                        if (fn < 0){fn = 0;}
+                    let ln = Math.floor(Math.random() * lastNames_length - 1);
+                        if (ln < 0){ln = 0;}
+                    let an = Math.floor(Math.random() * addrs_length - 1);
+                        if (an < 0){an = 0;}
+
+                    // 各要素に値のセット
+                    mynum.value = mynumn;
+                    name.value = firstNames_arr[fn] + lastNames_arr[ln];
+                    addr.value = addrs_arr[an];
+                    let gender_jdge = /子/.test(name.value);
+                    if (gender_jdge){
+                        gender[1].checked = true;
+                        gender_error_message.style.display = "none";
+                    } else {
+                        gender[0].checked = true;
+                        gender_error_message.style.display = "none";
+                    }
+                    // Submitボタンの解除
+                    btn.disabled = false;
+                    // ランダムボタンの制御
+                    btn_rdm.disabled = true;
+                })
        </script>
    </body>
 </html>
