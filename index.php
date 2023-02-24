@@ -193,11 +193,14 @@
                         if (ln < 0){ln = 0;}
                     let an = Math.floor(Math.random() * addrs_length - 1);
                         if (an < 0){an = 0;}
+                    let banch = (Math.floor( Math.random() * (8 + 1 - 1) ) + 1) + "-"
+                                + (Math.floor( Math.random() * (99 + 1 - 1) ) + 1) + "-"
+                                + (Math.floor( Math.random() * (99 + 1 - 1) ) + 1);
 
                     // 各要素に値のセット
                     mynum.value = mynumn;
                     name.value = firstNames_arr[fn] + lastNames_arr[ln];
-                    addr.value = addrs_arr[an];
+                    addr.value = addrs_arr[an] + banch;
                     let gender_jdge = /子/.test(name.value);
                     if (gender_jdge){
                         gender[1].checked = true;
