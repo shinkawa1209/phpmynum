@@ -84,8 +84,8 @@
                             <span class="confirm-item"><?php echo $addr; ?></span>
                             <input type="hidden" name="addr" value="<?php echo $addr; ?>">
                         </div>
-                        <div class="form-group">
-                        <input type="button" id="back" value="戻る">
+                        <div class="btn-group">
+                        <input type="button" id="back" value="　戻る　">
                         <button type="submit" id="next" <?php echo $btn; ?>>上記で占う</button>
                         </div>
                     </form>

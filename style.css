@@ -76,6 +76,15 @@ label{
     padding: 10px;
 }
 
+.btn-group{
+    padding: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
 input[type='text']{
     width: 200px;
     height: 1.8em;
@@ -92,7 +101,8 @@ textarea{
 }
 
 button{
-    margin-left: 125px;
+    width: -webkit-fill-available;
+    /* margin-left: 125px; */
 }
 
 /* footerのスタイル */
