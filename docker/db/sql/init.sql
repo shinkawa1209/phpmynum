@@ -41,6 +41,7 @@ INSERT INTO admins(
 create user $MYSQL_USER identified by $MYSQL_PASSWORD;
 grant all privileges on contacts.* to $MYSQL_USER@'%';
 grant all privileges on admins.* to $MYSQL_USER@'%';
+-- grant all privileges on *.* to $MYSQL_USER@'%';
 
 -- INSERT INTO contacts (name) VALUES ("yamada");
 -- INSERT INTO sample_table (sample) VALUES ("sample2");

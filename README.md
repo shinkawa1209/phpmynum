@@ -20,10 +20,8 @@ docker compose down
 docker compose up -d
 ```
 
-## piの場合
-- 各コンテナを32bit版にする必要がある
-- phpはビルド出来ないので、shinkawa1209/php-test2を使う
-- phpコンテナで/var/wwwを755にする
-- phpのmakedataは乱数の桁がintから溢れてるので修正
-- dbのイメージはjsurf/rpi-mariadbを使う
+## pi/ubuntuの場合
 - nginxのポートは80にする
+- dbのイメージはjsurf/rpi-mariadbを使う
+- コンテナ内に入りdbはsudo mysqlで実行する
+- dbのイニシャライズが効いてないので、クエリを手動で実行する
