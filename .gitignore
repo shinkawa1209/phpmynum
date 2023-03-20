@@ -4,3 +4,4 @@ test.php
 contacts.csv
 log.txt
 .env
+docker/nginx/letsencrypt
