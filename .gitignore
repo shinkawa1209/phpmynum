@@ -5,3 +5,4 @@ contacts.csv
 log.txt
 .env
 docker/nginx/letsencrypt
+docker/nginx/logs
