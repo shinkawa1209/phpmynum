@@ -32,7 +32,9 @@ nav a:hover{
 
 header{
     height: 350px;
-    background: url(./wall.jpg) center;
+    /* background: url(./wall.jpg) center; */
+    background: url(https://newrerictempstor.blob.core.windows.net/mynumapp/wall.jpg/wall.jpg) center;
+
 }
 
 #main-title{
